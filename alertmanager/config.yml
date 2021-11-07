@@ -10,11 +10,11 @@ route:
 receivers:
 - name: 'slack-notifications'
   slack_configs:
-  - api_url: https://hooks.slack.com/services/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
+  - api_url:  https://hooks.slack.com/services/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
     channel: '#devops'
     send_resolved: true
 
-
+    icon_url: https://avatars3.githubusercontent.com/u/3380462
     title: |-
       [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} for {{ .CommonLabels.job }}
       {{- if gt (len .CommonLabels) (len .GroupLabels) -}}
