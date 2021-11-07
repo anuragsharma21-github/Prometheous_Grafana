@@ -36,6 +36,10 @@ scrape_configs:
     static_configs:
          - targets: ['localhost:9090']
 
+  - job_name: 'games'
+    scrape_interval: 30s
+    static_configs:
+         - targets: ['10.0.60.107:80']
 
   - job_name: 'cadvisor'
 
