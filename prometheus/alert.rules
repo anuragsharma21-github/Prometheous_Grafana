@@ -1,22 +1,40 @@
 groups:
-- name: example
+- name: alert.rules
   rules:
-
-  # Alert for any instance that is unreachable for > 1s.
-  - alert: service_down
+  - alert: InstanceDown
     expr: up == 0
     for: 1s
     labels:
-      severity: page
+      severity: "critical"
     annotations:
-      summary: "Instance {{ $labels.instance }} down"
+      summary: "Endpoint {{ $labels.instance }} down"
       description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 second."
 
-  - alert: high_load
-    expr: node_load1 > 0.5
-    for: 2m
+  - alert: HostOutOfMemory
+    expr: node_memory_MemAvailable / node_memory_MemTotal * 100 < 25
+    for: 5m
     labels:
-      severity: page
+      severity: warning
     annotations:
-      summary: "Instance {{ $labels.instance }} under high load"
-      description: "{{ $labels.instance }} of job {{ $labels.job }} is under high load."
+      summary: "Host out of memory (instance {{ $labels.instance }})"
+      description: "Node memory is filling up (< 25% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+
+  - alert: HostOutOfDiskSpace
+    expr: (node_filesystem_avail{mountpoint="/"}  * 100) / node_filesystem_size{mountpoint="/"} < 50
+    for: 1s
+    labels:
+      severity: warning
+    annotations:
+      summary: "Host out of disk space (instance {{ $labels.instance }})"
+      description: "Disk is almost full (< 50% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+
+  - alert: HostHighCpuLoad
+    expr: (sum by (instance) (irate(node_cpu{job="node_exporter_metrics",mode="idle"}[1m]))) > 5
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Host high CPU load (instance {{ $labels.instance }})"
+      description: "CPU load is > 5%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
