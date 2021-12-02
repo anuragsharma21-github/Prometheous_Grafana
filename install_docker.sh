@@ -1,7 +1,6 @@
 # Reference  - https://docs.docker.com/engine/install/ubuntu/ #
 set -x
 # Uninstall Docker if any previous installation exist #
-# apt-get remove docker docker-engine docker.io containerd runc
 
 apt-get purge -y docker-engine docker docker.io docker-ce docker-ce-cli
 apt-get autoremove -y --purge docker-engine docker docker.io docker-ce  
