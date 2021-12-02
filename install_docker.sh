@@ -1,5 +1,5 @@
 # Reference  - https://docs.docker.com/engine/install/ubuntu/ #
-set -x
+
 # Uninstall Docker if any previous installation exist #
 
 apt-get purge -y docker-engine docker docker.io docker-ce docker-ce-cli
@@ -11,7 +11,7 @@ rm -rf /var/run/docker.sock
 # remove key file if exist from previous installations #
 rm -rf /usr/share/keyrings/docker-archive-keyring.gpg
 
-# Remove Prometheous_Grafana Folder is already exists #
+# delete prometheous_grafana directory if already exists #
 rm -rf /home/ubuntu/prometheous_grafana
 rm -rf /home/ubuntu/prometheus
 
@@ -33,7 +33,6 @@ apt-get install -y docker-ce docker-ce-cli containerd.io
 apt install stress
 
 # Check docker service and Swarm #
-
 docker ps
 docker swarm init
 docker service ls
